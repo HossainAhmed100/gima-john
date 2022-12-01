@@ -6,7 +6,7 @@ import Shop from './Components/Page/Shop/Shop';
 
 function App() {
 
-  return (
+  return ( 
     <>
     <Header />
     <Routes>
