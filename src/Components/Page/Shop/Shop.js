@@ -16,9 +16,9 @@ function Shop() {
     .then(data => setProducts(data))
   }, [])
 
-  const handleAddToCart = id => {
-    setCart([...cart, id])
-    addToDataBase(id)
+  const handleAddToCart = item => {
+    setCart([...cart, item])
+    addToDataBase(item.key)
   }
 
 

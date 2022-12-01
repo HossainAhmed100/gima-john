@@ -35,7 +35,7 @@ function ProductCart({product, handleAddToCart}) {
                 </div>
             </div>
             <div className='grid grid-cols-4 gap-2 mt-4'>
-                <button onClick={() => handleAddToCart(product.key)} className='py-2 hover:bg-blue-700 duration-500 col-span-3 rounded-lg text-white bg-blue-500'>Add To Cart</button>
+                <button onClick={() => handleAddToCart(product)} className='py-2 hover:bg-blue-700 duration-500 col-span-3 rounded-lg text-white bg-blue-500'>Add To Cart</button>
                 <button className='py-2 hover:bg-blue-100 duration-500 hover:text-blue-600 bg-gray-300 rounded-lg text-gray-500 flex justify-center items-center'><FaHeart className='text-center' size={25} /></button>
             </div>
         </div>
