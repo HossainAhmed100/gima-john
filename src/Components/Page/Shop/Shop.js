@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { addToDataBase } from '../../../utilities/dataBase';
+import { addToDataBase, getDataBase, removeDataBase } from '../../../utilities/dataBase';
 import Cart from '../../Hooks/Cart/Cart';
 import ProductCart from '../../Hooks/ProductCart/ProductCart'
 import './Shop.css'
@@ -16,9 +16,42 @@ function Shop() {
     .then(data => setProducts(data))
   }, [])
 
+  useEffect(() => {
+    const storedCart = getDataBase();
+    let newCart = [];
+    if(storedCart){
+      const  items = JSON.parse(storedCart);
+      for(let id in items){
+        const addedProduct = products.find(product => product.key === id);
+        if(addedProduct){
+          const quantity = items[id];
+          addedProduct.quantity = quantity;
+          newCart = [...newCart, addedProduct]
+        }
+      }
+      setCart(newCart)
+    }
+  }, [products])
+
   const handleAddToCart = item => {
-    setCart([...cart, item])
+    let newCarts = []; 
+    console.log(item.key)
+    const exists = cart.find(product => product.key === item.key);
+    if(!exists){
+      item.quantity = 1;
+      newCarts = [...cart, item]
+    }else{
+      const rest = cart.filter(product => product.key !== item.key);
+      exists.quantity = exists.quantity + 1;
+      newCarts = [...rest, exists];
+    }
+    setCart(newCarts)
     addToDataBase(item.key)
+  }
+
+  const handleRemove = () => {
+    removeDataBase()
+    setCart([])
   }
 
 
@@ -33,7 +66,7 @@ function Shop() {
       </div>
       </div>
       <div className="cart_container"><h1 className='text-3xl'>
-      <Cart cart={cart}/>  
+      <Cart cart={cart} handleRemove={handleRemove}/>  
       </h1></div>
       </div>
     </div>
