@@ -1,10 +1,21 @@
 import React from 'react'
 import './Header.css'
 import {RiShoppingCartFill} from 'react-icons/ri'
-import {FaShoppingBasket, FaRegHeart} from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import useCart from '../../Hooks/useCart'
+import UseProducts from '../../Hooks/UseProducts'
+import { FaShoppingBasket } from 'react-icons/fa'
 
 function Header() {
+
+  const [products] = UseProducts();  
+  const [cart] = useCart(products);
+  let itemQuantity = 0;
+  for(let item of cart){
+    itemQuantity = itemQuantity + item.quantity
+  }
+    
+
   return (
     <>
     
@@ -15,19 +26,25 @@ function Header() {
       <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Gigma</span>
   </Link>
   <div className="flex items-center space-around  md:order-2">
-      <Link to="../Page/Saved" className="block py-2 pl-3 pr-4 text-gray-700 mr-5 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><FaRegHeart size={20} /></Link>
-      <button type="button" className="text-white flex items-center space-around gap-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><FaShoppingBasket size={18} /> {0}</button>
+      <Link to='/signup' className="text-white flex items-center space-around gap-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">SignUp</Link>
+      <Link to='/login' className="text-white flex items-center space-around gap-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ml-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login </Link>
   </div>
   <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-    <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+    <ul className="flex items-center flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
       <li>
-        <Link to="/" className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Shop</Link>
+        <NavLink to="/shop" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Shop</NavLink>
       </li>
       <li>
-        <Link to="/" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Order Review</Link>
+        <NavLink to="/order" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Order Review</NavLink>
       </li>
       <li>
-        <Link to="/" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Manage Inventory</Link>
+        <NavLink to="/inventory" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Manage Inventory</NavLink>
+      </li>
+      <li>
+      <NavLink to="../page/saved" className="block py-2 pl-3 pr-4 text-gray-700 mr-5 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Watch list</NavLink>
+      </li>
+      <li>
+      <Link to='/cart' className="text-white flex items-center space-around gap-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 duration-300 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><FaShoppingBasket className='text-white' size={18} /> {itemQuantity}</Link>
       </li>
     </ul>
   </div>

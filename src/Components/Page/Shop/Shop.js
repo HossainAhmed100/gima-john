@@ -1,41 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { addToDataBase, getDataBase, removeDataBase } from '../../../utilities/dataBase';
-import Cart from '../../Hooks/Cart/Cart';
-import ProductCart from '../../Hooks/ProductCart/ProductCart'
+import React from 'react'
 import './Shop.css'
+import { Link } from 'react-router-dom';
+import Cart from '../../../Hooks/Cart/Cart';
+import useCart from '../../../Hooks/useCart';
+import { HiShoppingCart } from 'react-icons/hi';
+import UseProducts from '../../../Hooks/UseProducts';
+import ProductCart from '../../../Hooks/ProductCart/ProductCart';
+import { addToDataBase, removeDataBase } from '../../../utilities/dataBase';
 
 
 function Shop() {
 
-  const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [products] = UseProducts();
+  const [cart, setCart] = useCart(products);
 
-  useEffect(() => {
-    fetch('products.json')
-    .then(res => res.json())
-    .then(data => setProducts(data))
-  }, [])
 
-  useEffect(() => {
-    const storedCart = getDataBase();
-    let newCart = [];
-    if(storedCart){
-      const  items = JSON.parse(storedCart);
-      for(let id in items){
-        const addedProduct = products.find(product => product.key === id);
-        if(addedProduct){
-          const quantity = items[id];
-          addedProduct.quantity = quantity;
-          newCart = [...newCart, addedProduct]
-        }
-      }
-      setCart(newCart)
-    }
-  }, [products])
+
+  
 
   const handleAddToCart = item => {
-    let newCarts = []; 
-    console.log(item.key)
+    let newCarts = [];  
     const exists = cart.find(product => product.key === item.key);
     if(!exists){
       item.quantity = 1;
@@ -66,7 +50,9 @@ function Shop() {
       </div>
       </div>
       <div className="cart_container"><h1 className='text-3xl'>
-      <Cart cart={cart} handleRemove={handleRemove}/>  
+      <Cart cart={cart} handleRemove={handleRemove}>
+      <Link to={'/order'} className='font-medium text-xl flex gap-2  justify-center text-white bg-blue-600 hover:bg-blue-800 duration-500 py-2 rounded-lg items-center'>Review Order <HiShoppingCart /></Link>  
+      </Cart>  
       </h1></div>
       </div>
     </div>
